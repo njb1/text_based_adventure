@@ -2,6 +2,8 @@
 ## Added coded in main(),and create a function to ask for your name and return it.
 ##
 import os
+import random
+backpack = ""
 
 ##### ACTIONS #####
 def you_died(why):
@@ -17,6 +19,21 @@ def you_died(why):
     # This exits the program entirely.
     exit(0)
 
+
+def attack():
+    goodie = 100
+    baddie = 100
+
+    while goodie != 0 and baddie !=0:
+        goodie = goodie - random.randint(1, goodie)
+        print(goodie)
+        baddie = baddie - random.randint(1, baddie)
+        print(baddie)
+    if goodie > baddie:
+        return True
+    else:
+        return False
+
 ### END ACTIONS ###
 
 ### CHARACTERS ###
@@ -30,7 +47,7 @@ def soldier():
     # Actions on the soldier
     actions_dict = {"check":"You see the soldier is still sleeping, you need to get to that door on the right of him. What are you waiting for?",
                     "sneak":"You approach the soldier, he's still sleeping. Reaching for the door, you open it slowly and slip out.",
-                    "attack":"You swiftly run towards the sleeping soldier and knock him out with the hilt of your dagger. Unfortunately it wasn't hard enough."}
+                    "attack":"You swiftly run towards the sleeping soldier and attack him."}
     
     # While loop
     while True:
@@ -42,7 +59,22 @@ def soldier():
                 print("You are now outside, home free! Huzzah!\n")
                 return 
             elif action == "attack":
-                you_died("soldier woke with a grunt, and reached for his dagger and before you know it, the world goes dark and you just died. \n<GAME OVER>")
+                if attack():
+                    print("You beat the soldier!")
+                    print("You are now outside, home free! Huzzah!\n")
+                    return
+                else:
+                    you_died("soldier woke with a grunt, and reached for his dagger and before you know it, the world goes dark and you just died. \n<GAME OVER>")
+
+def the_player_backpack(treasure_contents):
+    global backpack
+    my_treasure = ""
+    my_treasure = my_treasure + treasure_contents
+    print(f'This is what I have now: + {my_treasure}')
+    backpack = backpack + my_treasure
+
+
+
 
 ### END CHARACTERS ###
 
@@ -97,6 +129,7 @@ def blue_door_room():
                 temp_treasure_list = treasure_box[:]
                 treasure_contents = ", ".join(treasure_box)
                 print(f"\tYou also receive {treasure_contents}.")
+                the_player_backpack(treasure_contents)
 
                 # Removing all the rest of the items in the treasure chest
                 for treasure in temp_treasure_list:
@@ -187,6 +220,9 @@ def start_adventure():
         blue_door_room()
     else:
         print("Sorry, it's either 'red' or 'blue' as the answer. You're the weakest link, goodbye!")
+
+
+
 
 
 def play_intro():
